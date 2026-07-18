@@ -1,9 +1,12 @@
+import MascotasList from "../components/mascotas/MascotasList";
+
 function MascotasPage() {
     return (
-        <div>
-            <h1>Hello, World!</h1>
-        </div>
+        <>
+            <h1>Pagina Mascotas</h1>
+            <MascotasList />
+        </>
     )
-}
+}  
 
 export default MascotasPage;
