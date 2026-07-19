@@ -1,32 +1,15 @@
-import { useEffect, useState } from "react";
-import mascotasApi from "../../api/mascotas-api";
 import {Link} from "react-router-dom";
+import MascotasForm from "./MascotasForm";
 
-function MascotasList() {
-    const [mascotasList, setMascotasList] = useState([]);
-    const fetchMascotas = async () => {
-
-        try {
-            const response = await mascotasApi.get('mascotas/');
-            console.log(response.data);
-            setMascotasList(response.data);
-            
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
-    useEffect(() => {
-        fetchMascotas();
-    }, [])
-
+function MascotasList({lista, onAdd}) {
+    
     return (
         <>
-            <h2>Lista mascotas</h2>
-            <Link to={"formulario/"}>Registrar Mascota</Link>
+            <h2>Lista Mascotas</h2>
+            <MascotasForm onAdd={onAdd} />
             
             {
-                mascotasList.map(m =>
+                lista.map(m =>
                 (
                     <div key={m.id}>
                         <h3>{m.nombre}</h3>

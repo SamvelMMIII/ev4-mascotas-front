@@ -3,7 +3,6 @@ import MascotasPage from "./pages/MascotasPage";
 import MascotasForm from "./components/mascotas/MascotasForm";
 
 function App() {
-
   return (
     <>
     <Router> 
@@ -13,7 +12,6 @@ function App() {
       
       <Routes>
         <Route path="mascotas/" element={<MascotasPage/>}/>
-        <Route path= "/mascotas/formulario/" element={<MascotasForm/>}/>
       </Routes>
     </Router>
     </>
