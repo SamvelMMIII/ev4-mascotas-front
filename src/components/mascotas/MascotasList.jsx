@@ -23,6 +23,8 @@ function MascotasList() {
     return (
         <>
             <h2>Lista mascotas</h2>
+            <Link to={"formulario/"}>Registrar Mascota</Link>
+            
             {
                 mascotasList.map(m =>
                 (
