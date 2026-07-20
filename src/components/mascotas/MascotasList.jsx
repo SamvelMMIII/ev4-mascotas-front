@@ -14,6 +14,12 @@ function MascotasList({lista, onAdd}) {
                     <div key={m.id}>
                         <h3>{m.nombre}</h3>
                         <img src={m.imagen} />
+                        <p>{m.descripcion}</p>
+                        <p>{m.edad}</p>
+                        <p>{m.raza}</p>
+                        <p>{m.estado}</p>
+                    
+                        <Link to={`/mascotas/${m.id}`}>Ver Mascota</Link>
                     </div>
                 )
                 )
