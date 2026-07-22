@@ -15,25 +15,51 @@ function MascotasPage() {
             console.log(error);
         }
     }
-
+    
     const addMascotas = async (mascota) => {
-        try{
-            const response = await mascotasApi.post('mascotas/', mascota );
+        try {
+            const response = await mascotasApi.post('mascotas/', mascota);
             console.log(response.data);
-        } catch (error){
+        } catch (error) {
             console.log(error);
-        }finally{
+        } finally {
             fetchMascotas();
         }
     }
+
+
+    const updateMascota = async (id, nuevoEstado) => {
+        try{
+            await mascotasApi.patch(`mascotas/${id}/`,{
+                estado: nuevoEstado
+            });
+            fetchMascotas();
+        }catch(error) {
+            console.log(error);
+        }
+    }
     
+    const deleteMascota = async (id) =>{
+        try{
+            await mascotasApi.delete(`mascotas/${id}/`);
+            fetchMascotas();
+        }catch(error){
+            console.log(error);
+        }
+    }
+
     useEffect(()=>{
         fetchMascotas();
     },[])
     return (
         <>
             <h1>Pagina Mascotas</h1>
-            <MascotasList  lista= {mascotasList}  onAdd={addMascotas}/>
+            <MascotasList  
+                lista= {mascotasList}  
+                onAdd={addMascotas}
+                onEdit={updateMascota}
+                onDelete={deleteMascota}
+            />
         </>
     )
 }  
