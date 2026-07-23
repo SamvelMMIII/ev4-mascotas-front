@@ -1,43 +1,59 @@
-import {useParams} from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import mascotasApi from "../../api/mascotas-api";
 import { useEffect, useState } from "react";
 
-function MascotasDetail() {
+const ESTADOS_LABEL = {
+    "perdida": "Perdida",
+    "encontrada": "Encontrada",
+    "en_adopcion": "En adopcion",
+    "adoptada": "Adoptada"
+}
 
-    const {id} = useParams();
-    console.log(id);
-    const[fetchError, setFetchError] = useState(false);
-    const [mascota,setMascota] = useState(null);
+function MascotasDetail() {
+    const { id } = useParams();
+    const [mascota, setMascota] = useState(null);
 
     const fetchMascotaDetail = async () => {
         try {
             const response = await mascotasApi.get(`mascotas/${id}/`);
-            console.log(response.data);
             setMascota(response.data);
-    
         } catch (error) {
-            console.log(error);
-            setFetchError(true);
-        }}
+            console.log("Error al cargar la mascota:", error);
+        }
+    };
 
     useEffect(() => {
         fetchMascotaDetail();
-    }, []);
+    }, [id]);
+
     return (
         <div>
-            {fetchError ? (
-                <p>Error al cargar los detalles de la mascota.</p>
+            {!mascota ? (
+                <p>Cargando detalles de la mascota...</p>
             ) : (
                 <>
-                <h2>{mascota?.nombre}</h2>
-                <img src={mascota?.imagen} alt={mascota?.nombre} />
-                <p>{mascota?.descripcion}</p>
-                <p>Edad: {mascota?.edad}</p>
-                <p>Raza: {mascota?.raza}</p>
+                    <h2>{mascota.nombre}</h2>
+                    {mascota.imagen && (
+                        <img 
+                            src={mascota.imagen} 
+                            alt={mascota.nombre} 
+                            style={{ maxWidth: '300px', borderRadius: '10px' }} 
+                        />
+                    )}
+                    <p><strong>Descripción:</strong> {mascota.descripcion}</p>
+                    
+                    <ul>
+                        <li><strong>Edad:</strong> {mascota.edad}</li>
+                        <li><strong>Raza:</strong> {mascota.raza}</li>
+                        <li><strong>Tipo de Animal:</strong> {mascota.tipo_animal}</li>
+                        <li><strong>Sexo:</strong> {mascota.sexo}</li>
+                        <li><strong>Tamaño:</strong> {mascota.tamano}</li>
+                        <li><strong>Estado actual:</strong> {ESTADOS_LABEL[mascota.estado] || mascota.estado}</li>
+                    </ul>
                 </>
             )}
-            
         </div>
     );
 }
+
 export default MascotasDetail;

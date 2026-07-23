@@ -4,7 +4,7 @@ import mascotasApi from "../../api/mascotas-api";
 function MascotasForm({onAdd}) {
 
     const [estados, setEstados] = useState([]);
-    const [tipoMascota, setTipoMascota] = useState([]);
+    const [tipoAnimal, setTipoAnimal] = useState([]);
     const [sexo, setSexo] = useState([]);
     const [tamano, setTamano] = useState([]);
     
@@ -13,7 +13,7 @@ function MascotasForm({onAdd}) {
     const [edad, setEdad] = useState("");
     const [raza, setRaza] = useState("");
     const [selectedEstado, setEstado] = useState("");
-    const [selectedTipoMascota, setTipoMascotaSeleccionada] = useState("");
+    const [selectedTipoAnimal, setTipoAnimalSeleccionado] = useState("");
     const [selectedSexo, setSexoSeleccionado] = useState("");
     const [selectedTamano, setTamanoSeleccionado] = useState("");
     const [imagen, setImagen] = useState(null);
@@ -23,7 +23,7 @@ function MascotasForm({onAdd}) {
             const response = await mascotasApi.get("choices/");
             console.log(response.data.estado);
             setEstados(response.data.estado);
-            setTipoMascota(response.data.tipo_animal);
+            setTipoAnimal(response.data.tipo_animal);
             setSexo(response.data.sexo);
             setTamano(response.data.tamano);
 
@@ -46,7 +46,7 @@ const handleSubmit = (e) =>{
     formData.append("edad", edad);
     formData.append("raza", raza);
     formData.append("estado", selectedEstado);
-    formData.append("tipo_mascota", selectedTipoMascota);
+    formData.append("tipo_animal", selectedTipoAnimal);
     formData.append("sexo", selectedSexo);
     formData.append("tamano", selectedTamano);
     formData.append("imagen", imagen); 
@@ -55,15 +55,19 @@ const handleSubmit = (e) =>{
 }
     return(
         <form  onSubmit={handleSubmit} encType="multipart/form-data">
+
             <label>Nombre:
                 <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
                 </label>
+
             <label>Descripcion:
                 <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} ></textarea>
                 </label>
+
             <label>Edad:
                 <input type="number" value={edad} onChange={(e) => setEdad(e.target.value)} />
                 </label>
+
             <label>Raza:
                 <input type="text" value={raza} onChange={(e) => setRaza(e.target.value)} />
                 </label>
@@ -76,14 +80,16 @@ const handleSubmit = (e) =>{
                     }
                 </select>
             </label>
+
             <label>Tipo Animal:
-                <select value={selectedTipoMascota} onChange={(e) => setTipoMascotaSeleccionada(e.target.value)}>
+                <select value={selectedTipoAnimal} onChange={(e) => setTipoAnimalSeleccionado(e.target.value)}>
                     <option value={""}>Sin estado</option>
                     {
-                        tipoMascota.map(e => <option value={e.value} key={e.value}>{e.label}</option>)
+                        tipoAnimal.map(e => <option value={e.value} key={e.value}>{e.label}</option>)
                     }
                 </select>
             </label>
+            
             <label>Sexo:
                 <select value={selectedSexo} onChange={(e) => setSexoSeleccionado(e.target.value)}>
                     <option value={""}>Sin estado</option>
@@ -92,6 +98,7 @@ const handleSubmit = (e) =>{
                     }
                 </select>
             </label>
+
             <label>Tamaño:
                 <select value={selectedTamano} onChange={(e) => setTamanoSeleccionado(e.target.value)}>
                     <option value={""}>Sin estado</option>
@@ -100,6 +107,7 @@ const handleSubmit = (e) =>{
                     }
                 </select>
             </label>
+            
             <label> Imagen:
                 <input type="file" onChange={(e) => setImagen(e.target.files[0])} />
                 </label>

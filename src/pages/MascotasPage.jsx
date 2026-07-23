@@ -26,8 +26,7 @@ function MascotasPage() {
             fetchMascotas();
         }
     }
-
-
+    
     const updateMascota = async (id, nuevoEstado) => {
         try{
             await mascotasApi.patch(`mascotas/${id}/`,{
