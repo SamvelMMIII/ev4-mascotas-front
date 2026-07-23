@@ -5,13 +5,16 @@ import { useEffect, useState } from "react";
 const ESTADOS_LABEL = {
     "perdida": "Perdida",
     "encontrada": "Encontrada",
-    "en_adopcion": "En adopcion",
+    "en_adopcion": "En Adopción",
     "adoptada": "Adoptada"
-}
+};
 
 function MascotasDetail() {
     const { id } = useParams();
     const [mascota, setMascota] = useState(null);
+    
+    const [nuevoComentario, setNuevoComentario] = useState("");
+    const [autorComentario, setAutorComentario] = useState(""); 
 
     const fetchMascotaDetail = async () => {
         try {
@@ -19,6 +22,33 @@ function MascotasDetail() {
             setMascota(response.data);
         } catch (error) {
             console.log("Error al cargar la mascota:", error);
+        }
+    };
+
+    const handleAgregarComentario = async (e) => {
+        e.preventDefault();
+        try {
+            await mascotasApi.post("comentarios/", {
+                mascota: id,
+                autor: autorComentario,
+                contenido: nuevoComentario
+            });
+            
+            setAutorComentario("");
+            setNuevoComentario("");
+            fetchMascotaDetail();
+        } catch (error) {
+            console.log("Error al agregar comentario:", error);
+        }
+    };
+
+    const handleEliminarComentario = async (comentarioId) => {
+        try {
+            await mascotasApi.delete(`comentarios/${comentarioId}/`);
+            
+            fetchMascotaDetail();
+        } catch (error) {
+            console.log("Error al eliminar comentario:", error);
         }
     };
 
@@ -50,6 +80,52 @@ function MascotasDetail() {
                         <li><strong>Tamaño:</strong> {mascota.tamano}</li>
                         <li><strong>Estado actual:</strong> {ESTADOS_LABEL[mascota.estado] || mascota.estado}</li>
                     </ul>
+
+                    <hr />
+
+                    <h3>Comentarios</h3>
+                    
+                    {mascota.comentarios && mascota.comentarios.length > 0 ? (
+                        <ul>
+                            {mascota.comentarios.map((comentario) => (
+                                <li key={comentario.id} style={{ marginBottom: "10px" }}>
+                                    <strong>{comentario.autor}:</strong> {comentario.contenido} 
+                                    <button 
+                                        onClick={() => handleEliminarComentario(comentario.id)}
+                                        style={{ marginLeft: "10px", color: "red", cursor: "pointer" }}
+                                    >
+                                        Eliminar
+                                    </button>
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
+                    )}
+
+                    <form onSubmit={handleAgregarComentario} style={{ marginTop: "20px", display: "flex", flexDirection: "column", maxWidth: "300px" }}>
+                        <label>Autor:</label>
+                        <input 
+                            type="text" 
+                            value={autorComentario} 
+                            onChange={(e) => setAutorComentario(e.target.value)} 
+                            required 
+                            style={{ marginBottom: "10px" }}
+                        />
+
+                        <label>Comentario:</label>
+                        <textarea 
+                            value={nuevoComentario} 
+                            onChange={(e) => setNuevoComentario(e.target.value)} 
+                            required 
+                            style={{ marginBottom: "10px" }}
+                        />
+
+                        <button type="submit">Agregar Comentario</button>
+                    </form>
+                    
+                    <br />
+                    <Link to="/mascotas">Volver a la lista</Link>
                 </>
             )}
         </div>
