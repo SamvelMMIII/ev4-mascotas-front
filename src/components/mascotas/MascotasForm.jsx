@@ -18,8 +18,12 @@ function MascotasForm({onAdd}) {
     const [selectedTamano, setTamanoSeleccionado] = useState("");
     const [imagen, setImagen] = useState(null);
 
+    const [mensajeError, setMensajeError] = useState("");
+
     const fetchEstados = async () =>{
         try{
+            setMensajeError("");
+
             const response = await mascotasApi.get("choices/");
             console.log(response.data.estado);
             setEstados(response.data.estado);
@@ -28,7 +32,12 @@ function MascotasForm({onAdd}) {
             setTamano(response.data.tamano);
 
         }catch(error){
-            console.log(error)
+            if (error.response && error.response.status === 404) {
+                setMensajeError("No se encontraron los datos de selección.");
+            } else if (error.response && error.response.status === 400) {
+                setMensajeError("Error al cargar los datos de selección. Por favor, verifica los datos.");
+            } else { setMensajeError("Ocurrió un error al cargar los datos de selección."); }
+            console.log(error.response?.data);
         }
     }
 
@@ -36,8 +45,34 @@ function MascotasForm({onAdd}) {
         fetchEstados();
     },[])
 
+const validarFormulario = () => {
+
+    if (
+        !nombre ||
+        !descripcion ||
+        !edad ||
+        !raza ||
+        !selectedEstado ||
+        !selectedTipoAnimal ||
+        !selectedSexo ||
+        !selectedTamano ||
+        !imagen
+    ) {
+        setMensajeError("Todos los campos son obligatorios.");
+        return false;
+    }
+
+    setMensajeError("");
+    return true;
+}
+
+
+
 const handleSubmit = (e) =>{
     e.preventDefault();
+    if (!validarFormulario()) {
+        return;
+    }
     
     console.log(imagen); 
     const formData = new FormData();
@@ -54,6 +89,7 @@ const handleSubmit = (e) =>{
     onAdd(formData); 
 }
     return(
+        <>{mensajeError && <p style={{color: 'red'}}>{mensajeError}</p>} 
         <form  onSubmit={handleSubmit} encType="multipart/form-data">
 
             <label>Nombre:
@@ -113,6 +149,7 @@ const handleSubmit = (e) =>{
                 </label>
                 <button type="submit">Guardar</button>
         </form>
+        </>
     )
 }
 

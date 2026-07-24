@@ -12,22 +12,32 @@ const ESTADOS_LABEL = {
 function MascotasDetail() {
     const { id } = useParams();
     const [mascota, setMascota] = useState(null);
+    const [mensajeError, setMensajeError] = useState("");
     
     const [nuevoComentario, setNuevoComentario] = useState("");
     const [autorComentario, setAutorComentario] = useState(""); 
 
     const fetchMascotaDetail = async () => {
         try {
+            setMensajeError("");
             const response = await mascotasApi.get(`mascotas/${id}/`);
             setMascota(response.data);
         } catch (error) {
-            console.log("Error al cargar la mascota:", error);
+            if (error.response && error.response.status === 404) {
+                setMensajeError("Mascota no encontrada.");
+            }else if (error.response?.status === 400){
+                setMensajeError("Error al cargar la mascota.");
+            }else {
+                setMensajeError("Ocurrió un error al cargar la mascota.");
+            }
+            console.log( error.response?.data);
         }
     };
 
     const handleAgregarComentario = async (e) => {
         e.preventDefault();
         try {
+            setMensajeError("");
             await mascotasApi.post("comentarios/", {
                 mascota: id,
                 autor: autorComentario,
@@ -38,17 +48,32 @@ function MascotasDetail() {
             setNuevoComentario("");
             fetchMascotaDetail();
         } catch (error) {
-            console.log("Error al agregar comentario:", error);
+            if (error.response && error.response.status === 400) {
+                setMensajeError("Error al agregar comentario. Por favor, verifica los datos ingresados.");
+            }else if (error.response && error.response.status === 404) {
+                setMensajeError("Mascota no encontrada. No se puede agregar el comentario.");
+            } else {
+                setMensajeError("Ocurrió un error al agregar el comentario.");
+            }
+            console.log(error.response?.data);
         }
     };
 
     const handleEliminarComentario = async (comentarioId) => {
         try {
+            setMensajeError("");
             await mascotasApi.delete(`comentarios/${comentarioId}/`);
             
             fetchMascotaDetail();
         } catch (error) {
-            console.log("Error al eliminar comentario:", error);
+            if (error.response && error.response.status === 404) {
+                setMensajeError("Comentario no encontrado. No se puede eliminar.");
+            }else if (error.response && error.response.status === 400) {
+                setMensajeError("Error al eliminar comentario. Por favor, verifica los datos.");
+            } else {
+                setMensajeError("Ocurrió un error al eliminar el comentario.");
+            }
+            console.log( error.response?.data);
         }
     };
 
@@ -58,6 +83,7 @@ function MascotasDetail() {
 
     return (
         <div>
+            {mensajeError && <p style={{ color: "red" }}>{mensajeError}</p>}
             {!mascota ? (
                 <p>Cargando detalles de la mascota...</p>
             ) : (
