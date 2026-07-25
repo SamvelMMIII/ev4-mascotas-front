@@ -82,79 +82,112 @@ function MascotasDetail() {
     }, [id]);
 
     return (
-        <div>
-            {mensajeError && <p style={{ color: "red" }}>{mensajeError}</p>}
+        <main className="container py-4">
+            {mensajeError && <div className="alert alert-danger" role="alert">{mensajeError}</div>}
             {!mascota ? (
-                <p>Cargando detalles de la mascota...</p>
+                <div className="card border-0 shadow-sm">
+                    <div className="card-body">
+                        <p className="placeholder-glow mb-0">Cargando detalles de la mascota...</p>
+                    </div>
+                </div>
             ) : (
                 <>
-                    <h2>{mascota.nombre}</h2>
-                    {mascota.imagen && (
-                        <img 
-                            src={mascota.imagen} 
-                            alt={mascota.nombre} 
-                            style={{ maxWidth: '300px', borderRadius: '10px' }} 
-                        />
-                    )}
-                    <p><strong>Descripción:</strong> {mascota.descripcion}</p>
-                    
-                    <ul>
-                        <li><strong>Edad:</strong> {mascota.edad}</li>
-                        <li><strong>Raza:</strong> {mascota.raza}</li>
-                        <li><strong>Tipo de Animal:</strong> {mascota.tipo_animal}</li>
-                        <li><strong>Sexo:</strong> {mascota.sexo}</li>
-                        <li><strong>Tamaño:</strong> {mascota.tamano}</li>
-                        <li><strong>Estado actual:</strong> {ESTADOS_LABEL[mascota.estado] || mascota.estado}</li>
-                    </ul>
+                    <Link className="btn btn-outline-success fw-bold mb-3" to="/mascotas">Volver a la lista</Link>
 
-                    <hr />
+                    <section className="card border-0 shadow-sm overflow-hidden mb-4">
+                        <div className="row g-0">
+                            <div className="col-lg-5">
+                                {mascota.imagen && (
+                                    <img 
+                                        className="img-fluid w-100 h-100 object-fit-cover"
+                                        src={mascota.imagen} 
+                                        alt={mascota.nombre} 
+                                    />
+                                )}
+                            </div>
+                            <div className="col-lg-7">
+                                <div className="card-body p-4">
+                                    <span className="badge text-bg-success mb-3">{ESTADOS_LABEL[mascota.estado] || mascota.estado}</span>
+                                    <h2 className="display-6 fw-bold mb-3">{mascota.nombre}</h2>
+                                    <p className="lead text-muted"><strong>Descripción:</strong> {mascota.descripcion}</p>
+                                    
+                                    <ul className="list-group list-group-flush">
+                                        <li className="list-group-item px-0 d-flex justify-content-between"><strong>Edad:</strong> <span>{mascota.edad}</span></li>
+                                        <li className="list-group-item px-0 d-flex justify-content-between"><strong>Raza:</strong> <span>{mascota.raza}</span></li>
+                                        <li className="list-group-item px-0 d-flex justify-content-between"><strong>Tipo de Animal:</strong> <span>{mascota.tipo_animal}</span></li>
+                                        <li className="list-group-item px-0 d-flex justify-content-between"><strong>Sexo:</strong> <span>{mascota.sexo}</span></li>
+                                        <li className="list-group-item px-0 d-flex justify-content-between"><strong>Tamaño:</strong> <span>{mascota.tamano}</span></li>
+                                        <li className="list-group-item px-0 d-flex justify-content-between"><strong>Estado actual:</strong> <span>{ESTADOS_LABEL[mascota.estado] || mascota.estado}</span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
 
-                    <h3>Comentarios</h3>
-                    
-                    {mascota.comentarios && mascota.comentarios.length > 0 ? (
-                        <ul>
-                            {mascota.comentarios.map((comentario) => (
-                                <li key={comentario.id} style={{ marginBottom: "10px" }}>
-                                    <strong>{comentario.autor}:</strong> {comentario.contenido} 
-                                    <button 
-                                        onClick={() => handleEliminarComentario(comentario.id)}
-                                        style={{ marginLeft: "10px", color: "red", cursor: "pointer" }}
-                                    >
-                                        Eliminar
-                                    </button>
-                                </li>
-                            ))}
-                        </ul>
-                    ) : (
-                        <p>No hay comentarios aún. ¡Sé el primero en comentar!</p>
-                    )}
+                    <section className="card border-0 shadow-sm" id="comentarios">
+                        <div className="card-body p-4">
+                            <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-3">
+                                <div>
+                                    <p className="text-primary fw-semibold text-uppercase small mb-1">Gestion de comentarios</p>
+                                    <h3 className="h4 fw-bold mb-0">Comentarios</h3>
+                                </div>
+                                <span className="badge text-bg-primary align-self-start align-self-md-center">
+                                    {mascota.comentarios ? mascota.comentarios.length : 0} comentarios
+                                </span>
+                            </div>
+                            
+                            {mascota.comentarios && mascota.comentarios.length > 0 ? (
+                                <ul className="list-group mb-4">
+                                    {mascota.comentarios.map((comentario) => (
+                                        <li className="list-group-item d-flex align-items-start justify-content-between gap-3" key={comentario.id}>
+                                            <div><strong>{comentario.autor}:</strong> {comentario.contenido}</div>
+                                            <button 
+                                                className="btn btn-sm btn-outline-danger fw-bold"
+                                                onClick={() => handleEliminarComentario(comentario.id)}
+                                            >
+                                                Eliminar
+                                            </button>
+                                        </li>
+                                    ))}
+                                </ul>
+                            ) : (
+                                <p className="text-muted mb-4">No hay comentarios aún. ¡Sé el primero en comentar!</p>
+                            )}
 
-                    <form onSubmit={handleAgregarComentario} style={{ marginTop: "20px", display: "flex", flexDirection: "column", maxWidth: "300px" }}>
-                        <label>Autor:</label>
-                        <input 
-                            type="text" 
-                            value={autorComentario} 
-                            onChange={(e) => setAutorComentario(e.target.value)} 
-                            required 
-                            style={{ marginBottom: "10px" }}
-                        />
+                            <div className="border rounded-3 bg-light p-3 p-md-4">
+                            <h4 className="h5 fw-bold mb-3">Agregar comentario</h4>
+                            <form className="row g-3" onSubmit={handleAgregarComentario}>
+                                <div className="col-md-4">
+                                    <label className="form-label">Autor:</label>
+                                    <input 
+                                        className="form-control"
+                                        type="text" 
+                                        value={autorComentario} 
+                                        onChange={(e) => setAutorComentario(e.target.value)} 
+                                        required 
+                                    />
+                                </div>
 
-                        <label>Comentario:</label>
-                        <textarea 
-                            value={nuevoComentario} 
-                            onChange={(e) => setNuevoComentario(e.target.value)} 
-                            required 
-                            style={{ marginBottom: "10px" }}
-                        />
+                                <div className="col-md-8">
+                                    <label className="form-label">Comentario:</label>
+                                    <textarea 
+                                        className="form-control"
+                                        value={nuevoComentario} 
+                                        onChange={(e) => setNuevoComentario(e.target.value)} 
+                                        required 
+                                    />
+                                </div>
 
-                        <button type="submit">Agregar Comentario</button>
-                    </form>
-                    
-                    <br />
-                    <Link to="/mascotas">Volver a la lista</Link>
+                                <div className="col-12 d-flex justify-content-end">
+                                    <button className="btn btn-primary fw-bold px-4" type="submit">Agregar Comentario</button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </section>
                 </>
             )}
-        </div>
+        </main>
     );
 }
 

@@ -77,16 +77,24 @@ function MascotasPage() {
         fetchMascotas();
     },[])
     return (
-        <>
-            <h1>Pagina Mascotas</h1>
-            {mensajeError && <p style={{color: 'red'}}>{mensajeError}</p>}
+        <main className="container py-4">
+            <div className="d-flex flex-column flex-md-row align-items-md-end justify-content-between gap-3 mb-4">
+                <div>
+                    <p className="text-success fw-semibold text-uppercase small mb-1">Red de mascotas</p>
+                    <h1 className="display-6 fw-bold mb-0">Mascotas publicadas</h1>
+                </div>
+                <span className="badge rounded-pill text-bg-success align-self-start align-self-md-end px-3 py-2">
+                    {mascotasList.length} registros
+                </span>
+            </div>
+            {mensajeError && <div className="alert alert-danger" role="alert">{mensajeError}</div>}
             <MascotasList  
                 lista= {mascotasList}  
                 onAdd={addMascotas}
                 onEdit={updateMascota}
                 onDelete={deleteMascota}
             />
-        </>
+        </main>
     )
 }  
 

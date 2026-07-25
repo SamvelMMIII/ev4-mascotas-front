@@ -89,27 +89,27 @@ const handleSubmit = (e) =>{
     onAdd(formData); 
 }
     return(
-        <>{mensajeError && <p style={{color: 'red'}}>{mensajeError}</p>} 
-        <form  onSubmit={handleSubmit} encType="multipart/form-data">
+        <>{mensajeError && <div className="alert alert-danger" role="alert">{mensajeError}</div>} 
+        <form className="row g-3" onSubmit={handleSubmit} encType="multipart/form-data">
 
-            <label>Nombre:
-                <input type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
+            <label className="col-md-6 form-label">Nombre:
+                <input className="form-control mt-1" type="text" value={nombre} onChange={(e) => setNombre(e.target.value)} />
                 </label>
 
-            <label>Descripcion:
-                <textarea value={descripcion} onChange={(e) => setDescripcion(e.target.value)} ></textarea>
+            <label className="col-md-6 form-label">Descripcion:
+                <textarea className="form-control mt-1" value={descripcion} onChange={(e) => setDescripcion(e.target.value)} ></textarea>
                 </label>
 
-            <label>Edad:
-                <input type="number" value={edad} onChange={(e) => setEdad(e.target.value)} />
+            <label className="col-md-3 form-label">Edad:
+                <input className="form-control mt-1" type="number" value={edad} onChange={(e) => setEdad(e.target.value)} />
                 </label>
 
-            <label>Raza:
-                <input type="text" value={raza} onChange={(e) => setRaza(e.target.value)} />
+            <label className="col-md-3 form-label">Raza:
+                <input className="form-control mt-1" type="text" value={raza} onChange={(e) => setRaza(e.target.value)} />
                 </label>
             
-            <label>Estado:
-                <select value={selectedEstado} onChange={(e) => setEstado(e.target.value)}>
+            <label className="col-md-3 form-label">Estado:
+                <select className="form-select mt-1" value={selectedEstado} onChange={(e) => setEstado(e.target.value)}>
                     <option value={""}>Sin estado</option>
                     {
                         estados.map(e => <option value={e.value} key={e.value}>{e.label}</option>)
@@ -117,8 +117,8 @@ const handleSubmit = (e) =>{
                 </select>
             </label>
 
-            <label>Tipo Animal:
-                <select value={selectedTipoAnimal} onChange={(e) => setTipoAnimalSeleccionado(e.target.value)}>
+            <label className="col-md-3 form-label">Tipo Animal:
+                <select className="form-select mt-1" value={selectedTipoAnimal} onChange={(e) => setTipoAnimalSeleccionado(e.target.value)}>
                     <option value={""}>Sin estado</option>
                     {
                         tipoAnimal.map(e => <option value={e.value} key={e.value}>{e.label}</option>)
@@ -126,8 +126,8 @@ const handleSubmit = (e) =>{
                 </select>
             </label>
             
-            <label>Sexo:
-                <select value={selectedSexo} onChange={(e) => setSexoSeleccionado(e.target.value)}>
+            <label className="col-md-4 form-label">Sexo:
+                <select className="form-select mt-1" value={selectedSexo} onChange={(e) => setSexoSeleccionado(e.target.value)}>
                     <option value={""}>Sin estado</option>
                     {
                         sexo.map(e => <option value={e.value} key={e.value}>{e.label}</option>)
@@ -135,8 +135,8 @@ const handleSubmit = (e) =>{
                 </select>
             </label>
 
-            <label>Tamaño:
-                <select value={selectedTamano} onChange={(e) => setTamanoSeleccionado(e.target.value)}>
+            <label className="col-md-4 form-label">Tamaño:
+                <select className="form-select mt-1" value={selectedTamano} onChange={(e) => setTamanoSeleccionado(e.target.value)}>
                     <option value={""}>Sin estado</option>
                     {
                         tamano.map(e => <option value={e.value} key={e.value}>{e.label}</option>)
@@ -144,10 +144,12 @@ const handleSubmit = (e) =>{
                 </select>
             </label>
             
-            <label> Imagen:
-                <input type="file" onChange={(e) => setImagen(e.target.files[0])} />
+            <label className="col-md-4 form-label"> Imagen:
+                <input className="form-control mt-1" type="file" onChange={(e) => setImagen(e.target.files[0])} />
                 </label>
-                <button type="submit">Guardar</button>
+                <div className="col-12 d-flex justify-content-end">
+                    <button className="btn btn-success fw-bold px-4" type="submit">Guardar</button>
+                </div>
         </form>
         </>
     )
