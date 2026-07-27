@@ -7,7 +7,7 @@ function MascotasForm({onAdd}) {
     const [tipoAnimal, setTipoAnimal] = useState([]);
     const [sexo, setSexo] = useState([]);
     const [tamano, setTamano] = useState([]);
-    
+
     const [nombre, setNombre] = useState("");
     const [descripcion, setDescripcion] = useState("");
     const [edad, setEdad] = useState("");
@@ -17,7 +17,6 @@ function MascotasForm({onAdd}) {
     const [selectedSexo, setSexoSeleccionado] = useState("");
     const [selectedTamano, setTamanoSeleccionado] = useState("");
     const [imagen, setImagen] = useState(null);
-
     const [mensajeError, setMensajeError] = useState("");
 
     const fetchEstados = useCallback(async () => {
@@ -40,12 +39,10 @@ function MascotasForm({onAdd}) {
     }, []);
 
     useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchEstados();
-}, [fetchEstados]);
+        fetchEstados();
+    }, [fetchEstados]);
 
 const validarFormulario = () => {
-
     if (
         !nombre ||
         !descripcion ||
@@ -64,8 +61,6 @@ const validarFormulario = () => {
     setMensajeError("");
     return true;
 }
-
-
 
 const handleSubmit = (e) =>{
     e.preventDefault();
@@ -109,7 +104,7 @@ const handleSubmit = (e) =>{
             
             <label className="col-md-3 form-label">Estado:
                 <select className="form-select mt-1" value={selectedEstado} onChange={(e) => setEstado(e.target.value)}>
-                    <option value={""}>Sin estado</option>
+                    <option value={""} disabled>Seleccione un estado...</option>
                     {
                         estados.map(e => <option value={e.value} key={e.value}>{e.label}</option>)
                     }
@@ -118,7 +113,7 @@ const handleSubmit = (e) =>{
 
             <label className="col-md-3 form-label">Tipo Animal:
                 <select className="form-select mt-1" value={selectedTipoAnimal} onChange={(e) => setTipoAnimalSeleccionado(e.target.value)}>
-                    <option value={""}>Sin estado</option>
+                    <option value={""} disabled>Seleccione un tipo...</option>
                     {
                         tipoAnimal.map(e => <option value={e.value} key={e.value}>{e.label}</option>)
                     }
@@ -127,7 +122,7 @@ const handleSubmit = (e) =>{
             
             <label className="col-md-4 form-label">Sexo:
                 <select className="form-select mt-1" value={selectedSexo} onChange={(e) => setSexoSeleccionado(e.target.value)}>
-                    <option value={""}>Sin estado</option>
+                    <option value={""} disabled>Seleccione el sexo...</option>
                     {
                         sexo.map(e => <option value={e.value} key={e.value}>{e.label}</option>)
                     }
@@ -136,7 +131,7 @@ const handleSubmit = (e) =>{
 
             <label className="col-md-4 form-label">Tamaño:
                 <select className="form-select mt-1" value={selectedTamano} onChange={(e) => setTamanoSeleccionado(e.target.value)}>
-                    <option value={""}>Sin estado</option>
+                    <option value={""} disabled>Seleccione el tamaño...</option>
                     {
                         tamano.map(e => <option value={e.value} key={e.value}>{e.label}</option>)
                     }

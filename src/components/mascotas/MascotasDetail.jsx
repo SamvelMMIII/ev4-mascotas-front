@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from "react";
 const ESTADOS_LABEL = {
     "perdida": "Perdida",
     "encontrada": "Encontrada",
-    "en_adopcion": "En Adopción",
+    "en_adopcion": "En adopción",
     "adoptada": "Adoptada"
 };
 
@@ -13,7 +13,6 @@ function MascotasDetail() {
     const { id } = useParams();
     const [mascota, setMascota] = useState(null);
     const [mensajeError, setMensajeError] = useState("");
-    
     const [nuevoComentario, setNuevoComentario] = useState("");
     const [autorComentario, setAutorComentario] = useState(""); 
 
@@ -78,9 +77,8 @@ function MascotasDetail() {
     };
 
     useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchMascotaDetail();
-}, [fetchMascotaDetail]);
+        fetchMascotaDetail();
+    }, [fetchMascotaDetail]);
 
     return (
         <main className="container py-4">
@@ -129,7 +127,7 @@ function MascotasDetail() {
                         <div className="card-body p-4">
                             <div className="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2 mb-3">
                                 <div>
-                                    <p className="text-primary fw-semibold text-uppercase small mb-1">Gestion de comentarios</p>
+                                    <p className="text-primary fw-semibold text-uppercase small mb-1">Gestión de comentarios</p>
                                     <h3 className="h4 fw-bold mb-0">Comentarios</h3>
                                 </div>
                                 <span className="badge text-bg-primary align-self-start align-self-md-center">

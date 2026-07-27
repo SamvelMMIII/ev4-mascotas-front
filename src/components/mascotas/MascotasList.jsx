@@ -5,7 +5,7 @@ import { useState } from "react";
 const ESTADOS_LABEL = {
     "perdida": "Perdida",
     "encontrada": "Encontrada",
-    "en_adopcion": "En adopcion",
+    "en_adopcion": "En adopción",
     "adoptada": "Adoptada"
 };
 
@@ -83,7 +83,7 @@ function MascotasList({lista, onAdd, onEdit, onDelete}) {
                                                     Encontrada
                                                 </option>
                                                 <option value="en_adopcion">
-                                                    En adopcion
+                                                    En adopción
                                                 </option>
                                                 <option value="adoptada">
                                                     Adoptada

@@ -73,9 +73,8 @@ function MascotasPage() {
     }
 
     useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    fetchMascotas();
-}, [fetchMascotas]);
+        fetchMascotas();
+    }, [fetchMascotas]);
 
     return (
         <main className="container py-4">
