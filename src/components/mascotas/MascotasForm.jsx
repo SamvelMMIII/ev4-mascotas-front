@@ -81,7 +81,21 @@ const handleSubmit = (e) =>{
     formData.append("imagen", imagen); 
 
     onAdd(formData); 
+
+    setNombre("");
+    setDescripcion("");
+    setEdad("");
+    setRaza("");
+    setEstado("");
+    setTipoAnimalSeleccionado("");
+    setSexoSeleccionado("");
+    setTamanoSeleccionado("");
+    setImagen(null);
+    setMensajeError("");
+
+    e.target.reset();
 }
+
     return(
         <>{mensajeError && <div className="alert alert-danger" role="alert">{mensajeError}</div>} 
         <form className="row g-3" onSubmit={handleSubmit} encType="multipart/form-data">

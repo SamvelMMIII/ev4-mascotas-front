@@ -47,6 +47,12 @@ Codex ayudo especificamente en:
 - Ejecutar y revisar el resultado de `npm run build`.
 - Ejecutar ESLint para detectar advertencias y errores relevantes antes de la entrega.
 
+La IA (Gemini) ayudo especificamente en:
+
+- Optimización de Hooks: Se utilizó la IA para resolver advertencias de dependencias en ESLint mediante la implementación del hook useCallback. Esto permitió memorizar funciones (como las peticiones a la API) para evitar que se recrearan en cada renderizado, evitando bucles infinitos en los useEffect.
+- Configuración de ESLint: La IA sugirió añadir la regla rules: { 'react-hooks/set-state-in-effect': 'off' } en la configuración. Esto fue necesario porque el flujo de trabajo de la aplicación requiere actualizar variables de estado (como cargar la lista de mascotas) inmediatamente después de que se resuelve una promesa dentro de un useEffect. Desactivar esta regla evitó falsos positivos y errores bloqueantes del linter al realizar esta práctica común.
+- Control de errores asíncronos (try/catch): Estructuración de funciones async/await para acciones como agregar o eliminar comentarios. Permitió validar el error.response.status en el bloque catch para lanzar alertas específicas (400, 404) y resincronizar la interfaz en tiempo real.
+
 ## Comandos del proyecto
 
 Instalar dependencias:
