@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import mascotasApi from "../../api/mascotas-api";
 
 function MascotasForm({onAdd}) {
@@ -20,18 +20,16 @@ function MascotasForm({onAdd}) {
 
     const [mensajeError, setMensajeError] = useState("");
 
-    const fetchEstados = async () =>{
-        try{
-            setMensajeError("");
-
+    const fetchEstados = useCallback(async () => {
+        try {
             const response = await mascotasApi.get("choices/");
             console.log(response.data.estado);
             setEstados(response.data.estado);
             setTipoAnimal(response.data.tipo_animal);
             setSexo(response.data.sexo);
             setTamano(response.data.tamano);
-
-        }catch(error){
+            setMensajeError("");
+        } catch (error) {
             if (error.response && error.response.status === 404) {
                 setMensajeError("No se encontraron los datos de selección.");
             } else if (error.response && error.response.status === 400) {
@@ -39,11 +37,12 @@ function MascotasForm({onAdd}) {
             } else { setMensajeError("Ocurrió un error al cargar los datos de selección."); }
             console.log(error.response?.data);
         }
-    }
+    }, []);
 
-    useEffect(()=>{
-        fetchEstados();
-    },[])
+    useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchEstados();
+}, [fetchEstados]);
 
 const validarFormulario = () => {
 

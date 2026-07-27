@@ -1,19 +1,18 @@
 import MascotasList from "../components/mascotas/MascotasList";
 import mascotasApi from "../api/mascotas-api";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 function MascotasPage() {
 
     const [mascotasList, setMascotasList] = useState([]);
     const [mensajeError, setMensajeError] = useState("");
 
-    const fetchMascotas = async ()=> {
+    const fetchMascotas = useCallback(async () => {
         try{
-            setMensajeError("");
             const response = await mascotasApi.get('mascotas/');
-            console.log(response.data);
             setMascotasList(response.data);
-        }catch (error){
+            setMensajeError("");
+        } catch (error) {
             if (error.response && error.response.status === 404) {
                 setMensajeError("No se encontraron mascotas.");
             } else if (error.response && error.response.status === 400) {
@@ -21,7 +20,7 @@ function MascotasPage() {
             } else { setMensajeError("Ocurrió un error al cargar las mascotas."); }
             console.log(error.response?.data);
         }
-    }
+    }, []);
     
     const addMascotas = async (mascota) => {
         try {
@@ -73,9 +72,11 @@ function MascotasPage() {
         }
     }
 
-    useEffect(()=>{
-        fetchMascotas();
-    },[])
+    useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchMascotas();
+}, [fetchMascotas]);
+
     return (
         <main className="container py-4">
             <div className="d-flex flex-column flex-md-row align-items-md-end justify-content-between gap-3 mb-4">

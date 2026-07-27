@@ -1,6 +1,6 @@
 import { useParams, Link } from "react-router-dom";
 import mascotasApi from "../../api/mascotas-api";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 
 const ESTADOS_LABEL = {
     "perdida": "Perdida",
@@ -17,22 +17,22 @@ function MascotasDetail() {
     const [nuevoComentario, setNuevoComentario] = useState("");
     const [autorComentario, setAutorComentario] = useState(""); 
 
-    const fetchMascotaDetail = async () => {
+    const fetchMascotaDetail = useCallback(async () => {
         try {
-            setMensajeError("");
             const response = await mascotasApi.get(`mascotas/${id}/`);
             setMascota(response.data);
+            setMensajeError(""); 
         } catch (error) {
             if (error.response && error.response.status === 404) {
                 setMensajeError("Mascota no encontrada.");
-            }else if (error.response?.status === 400){
+            } else if (error.response?.status === 400) {
                 setMensajeError("Error al cargar la mascota.");
-            }else {
+            } else {
                 setMensajeError("Ocurrió un error al cargar la mascota.");
             }
-            console.log( error.response?.data);
+            console.log(error.response?.data);
         }
-    };
+    }, [id]);
 
     const handleAgregarComentario = async (e) => {
         e.preventDefault();
@@ -78,8 +78,9 @@ function MascotasDetail() {
     };
 
     useEffect(() => {
-        fetchMascotaDetail();
-    }, [id]);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    fetchMascotaDetail();
+}, [fetchMascotaDetail]);
 
     return (
         <main className="container py-4">
